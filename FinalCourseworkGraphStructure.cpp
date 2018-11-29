@@ -1,3 +1,5 @@
+// Unwe.cpp : This file contains the 'main' function. Program execution begins and ends there.
+//
 
 #include "pch.h"
 #include <iostream>
@@ -24,6 +26,13 @@ public:
 
 
 void addArc(node* n1, node* n2, int w) {
+	
+
+	while (w < 0) {
+		cout << " Weight must be above 0 you idiot add type make it posotive  -- ";
+		cin >> w;
+		
+	}
 	n1->connections.push_back(n2->nodeNum); // adds the conenction node name to the conenction list
 	n1->weights.push_back(w); // adds the weight to the wieghts list
 	n2->connections.push_back(n1->nodeNum);
@@ -53,6 +62,7 @@ void printGraph(vector<node*> myGraph) {
 }
 
 void isPath(int v, int w, vector<node*> myGraph) {
+
 
 	bool isVW = false; // boolean to check if there is a conenction
 	for (node* i : myGraph) { // loops through the graph
@@ -113,7 +123,7 @@ void bfs(int v, vector<node*> myGraph) {
 			que.pop_front();  // takes of the top of the que, moves everything forwardd
 			beenTo[u] = true;
 		}
-		
+
 		node* n = myGraph[u]; //finds the node in the graph
 		for (int i : n->connections) {   // loops through the connections in the graph
 			if (!beenTo[i]) {   // if beenTo is false on that iteration 
@@ -131,7 +141,7 @@ void bfs(int v, vector<node*> myGraph) {
 }
 
 void dfs(vector<node*> myGraph, int v) {
-	
+
 	if (myGraph[0]->nodeNum != 0) {
 		cout << "GRAPH NODES MUST BE INTS AND START WITH ZERO TO USE DFS SORRYYYYY";
 		return;
@@ -152,8 +162,8 @@ void dfs(vector<node*> myGraph, int v) {
 			visited.push_back(u);
 			beenTo[u] = true;
 		}
-		
-		
+
+
 		node* n = myGraph[u]; //finds the node in the graph
 		/*
 			This bit here is why you have to start at 0... it kept throwing a runtimes
@@ -162,7 +172,7 @@ void dfs(vector<node*> myGraph, int v) {
 		*/
 
 		for (int i : n->connections) {   // loops through the connections in the graph
-			if (beenTo[i]==false) {   // if beenTo is false on that iteration 
+			if (beenTo[i] == false) {   // if beenTo is false on that iteration 
 				s.push(i);  // add it to the stack
 			}
 		}
@@ -192,28 +202,25 @@ void dijk(vector<node*> myGraph, node* s, node* d) {
 	int min;
 	while (v != d) {  // while we have not reached the destination node
 		for (int i = 0; i < v->connections.size(); i++) {  // loops through the adjecent nodes from the current node
-			int node = v->connections[i];  
+			int node = v->connections[i];
 			if (v->tw + v->weights[i] < myGraph[node]->tw) {  // if current nodes distance + the weight to the ajecent node is less than the tw of that node
 				myGraph[node]->tw = v->tw + v->weights[i];  //  then set the tw to current nodes tw + the edge distance
 				myGraph[node]->lastNode = v->nodeNum;  //  stores the current node as the previous node
 			}
 		}
-		beenTo[v->nodeNum] = true;  
+		beenTo[v->nodeNum] = true;
 		min = numeric_limits<int>::max();   // sets a minimun value
-		for (int i = 0; i < myGraph.size(); i++) {    
+		for (int i = 0; i < myGraph.size(); i++) {
 			if (!beenTo[i] && myGraph[i]->tw < min) {		// if the node has not been visited yet, and it is less than the min
 				v = myGraph[i];    //    sets it to be the new current node
 				min = myGraph[i]->tw;   //   sets the min to be that to check the other nodes are not more expensive.
 			}
 		}
-		//cout << " HERE ";
-
 	}
-	//cout << min;
 	vector <int> routeTaken;  // creates a vector to store the route taken 
 	bool finished = false;
 	int distance = d->tw;   // distacne variable 
-	while (finished ==  false) {
+	while (finished == false) {
 		if (d == s) {
 			finished = true;
 		}
@@ -226,7 +233,7 @@ void dijk(vector<node*> myGraph, node* s, node* d) {
 		cout << routeTaken[i] << " ";  // out puts the path taken
 	}
 	cout << " With the total distance of " << distance;  // outputs the distance.
-	
+
 }
 int main()
 {
@@ -239,36 +246,22 @@ int main()
 	node* n5 = newNode(0, 4);
 	node* n6 = newNode(0, 5);
 
-	// Adds the arcs/ connections
-	// with node 1 and node 2 qhich you want to conenct **must be node object**-- aswell as the weight int
-	addArc(n1, n2, 4); // creates a arc between n1 and n2 with the weighting of 4.
-	addArc(n1, n5, 2);
-	addArc(n2, n4, 9);
-	addArc(n3, n4, 7);
-	addArc(n6, n2, 1);
+
 	// adds the nodes to the vector for the graph
 	myGraph.emplace_back(n1);
 	myGraph.emplace_back(n2);
-	myGraph.emplace_back(n3); 
+	myGraph.emplace_back(n3);
 	myGraph.emplace_back(n4);
 	myGraph.emplace_back(n5);
 	myGraph.emplace_back(n6);
 
-
-
-
-	//addWeight(n1, n2, 4);
-
-	/*
-	for (node* i : myGraph) {
-		cout << i->nodeNum << " is connected to - ";
-		for (node* r : i->connections) {
-
-			cout << r->nodeNum << " ";
-
-
-		}
-	}*/
+	// Adds the arcs/ connections
+	// with node 1 and node 2 qhich you want to conenct **must be node object**-- aswell as the weight int
+	addArc(n1, n2, -4); // creates a arc between n1 and n2 with the weighting of 4.
+	addArc(n1, n5, 2);
+	addArc(n2, n4, 9);
+	addArc(n3, n4, 7);
+	addArc(n6, n2, 1);
 
 	// Is path funtions- Writes to an output file with the series of intergers. 
 	isPath(1, 2, myGraph);
@@ -279,8 +272,7 @@ int main()
 	bfs(0, myGraph);
 	dijk(myGraph, n1, n3);
 
-
-
+	
 	return 0;
 }
 
