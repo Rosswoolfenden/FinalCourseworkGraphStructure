@@ -236,7 +236,7 @@ int main()
 //nodes have to be in order and start at 0 for dfs and bfs to work. soz
 	node* n1 = newNode(0, 0);   // creates a new node with the node value of 0, in the position of 0.
 	node* n2 = newNode(0, 1);
-	node* n3 = newNode(0, 2);	// !!! NOTE TO SELF--MAKE VALIDATION TO MAKE SURE IT IS A POSITIVE INT
+	node* n3 = newNode(0, 2);	
 	node* n4 = newNode(0, 3);
 	node* n5 = newNode(0, 4);
 	node* n6 = newNode(0, 5);
